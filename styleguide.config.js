@@ -2,16 +2,35 @@ const path = require("path");
 
 module.exports = {
   sections: [
-    {
-      name: "Cloudinary Vue SDK",
-      content: "docs-sources/links.md",
-      tocHide: true
-    },
-    { name: "About Cloudinary", content: "docs-sources/desc.md" },
+    { name: "Cloudinary Vue SDK", content: "docs.links.md", tocHide: true },
     {
       name: "Install core components",
       content: "docs-sources/installation.md",
       components: ["src/components/**/*.vue"],
+      sectionDepth: 1
+    },
+    {
+      name: "Video Player component",
+      content: "videoplayer/docs/description.md",
+      sections: [
+        {
+          name: "Install Video Player",
+          content: "videoplayer/docs/installation.md"
+        }
+      ],
+      components: ["videoplayer/src/components/**/*.vue"],
+      sectionDepth: 1
+    },
+    {
+      name: "Uploader component",
+      content: "uploader/docs/description.md",
+      sections: [
+        {
+          name: "Install Uploader",
+          content: "uploader/docs/installation.md"
+        }
+      ],
+      components: ["uploader/src/components/**/*.vue"],
       sectionDepth: 1
     }
   ],
@@ -237,16 +256,5 @@ module.exports = {
       __dirname,
       "docs-sources/SectionHeadingRenderer"
     )
-  },
-  dangerouslyUpdateWebpackConfig(webpackConfig) {
-    webpackConfig.output.filename = "build/[name].bundle.js";
-    webpackConfig.output.chunkFilename = "build/[name].js";
-    webpackConfig.plugins.forEach(plugin => {
-      if (plugin.__proto__.constructor.name === "MiniCssExtractPlugin") {
-        plugin.options.filename = "css/[name].css";
-        plugin.options.chunkFilename = "css/[name].css";
-      }
-    });
-    return webpackConfig;
   }
 };
