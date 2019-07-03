@@ -25,11 +25,9 @@ module.exports = {
     const subfolder = rel
       .replace(`src/components/${name}.vue`, "")
       .replace(/^([^/]+)\/?$/, "$1");
-    return `
-      import { ${name} } from 'cloudinary-vue${
+    return `import { ${name} } from 'cloudinary-vue${
       subfolder ? `/${subfolder}` : ""
-    }';
-    `;
+    }';`;
   },
   editorConfig: {
     theme: "lesser-dark"
@@ -160,21 +158,58 @@ module.exports = {
           border-radius: 6px;
         }
 
-        table[class^=rsg] td, table[class^=rsg] th {
+    		table {
+          margin:0;
+          padding:0;
+    			border-collapse: collapse;
+    			margin-bottom: 10px
+        }
+        
+    		table tr:first-child {
+    			border-top: 1px silver solid;
+    		}
+    		table tr {
+    			border-bottom: 1px silver solid;
+        }
+        
+    		table tr td,
+    		table tr th {
           font-size: 13px;
           padding: 7px 10px;
-          border: 1px solid #ddd;
           line-height: 18px;
           overflow-wrap: break-word;
+    			border-right: 1px silver solid;
         }
-        table[class^=rsg] th {
+    		table tr td:first-child,
+    		table tr th:first-child {
+    			border-left: 1px silver solid;
+        }
+    		table tr th {
+    			text-align: left;
           color: #888;
           font-weight: bold;
+    			white-space: nowrap;
         }
-        table[class^=rsg] td a {
+    		table tr td {
+    			vertical-align: top;
+        }
+        table tr td:last-child {
+  				width: 99%;
+        }
+        
+  			table tr td p {
+  				margin-top: 1em;
+  			}
+  			table tr td p:first-child {
+  				margin-top: 0;
+  			}
+  			table tr td p:last-child {
+  				margin-bottom: 0
+  			}
+        table tr td a {
           font-weight: normal;
         }
-        table[class^=rsg] code {
+        table tr td code {
           font-size: 12px;
           overflow-wrap: break-word;
           word-break: break-word;
@@ -224,21 +259,30 @@ module.exports = {
   styleguideDir: "docs",
   styleguideComponents: {
     "slots/IsolateButton": path.join(__dirname, "docs-sources/IsolateButton"),
-    "rsg-components/slots/UsageTabButton": path.join(
-      __dirname,
-      "docs-sources/UsageTabButton"
-    ),
-    "rsg-components/lib/slots/UsageTabButton": path.join(
-      __dirname,
-      "docs-sources/UsageTabButton"
-    ),
+    "Para/ParaRenderer": path.join(__dirname, "docs-sources/ParaRenderer"),
+    Pathline: path.join(__dirname, "docs-sources/PathlineRenderer"),
     StyleGuideRenderer: path.join(__dirname, "docs-sources/StyleGuideRenderer"),
     SectionHeadingRenderer: path.join(
       __dirname,
       "docs-sources/SectionHeadingRenderer"
+    ),
+    ReactComponentRenderer: path.join(
+      __dirname,
+      "docs-sources/ReactComponentRenderer"
     )
   },
   dangerouslyUpdateWebpackConfig(webpackConfig) {
+    webpackConfig.resolve.alias[
+      "rsg-components/slots/UsageTabButton"
+    ] = path.join(__dirname, "docs-sources/UsageTabButton");
+    webpackConfig.resolve.alias[
+      "rsg-components/Table/TableRenderer"
+    ] = path.join(__dirname, "docs-sources/TableRenderer");
+    webpackConfig.resolve.alias["rsg-components/Table"] = path.join(
+      __dirname,
+      "docs-sources/TableRenderer"
+    );
+
     webpackConfig.output.filename = "build/[name].bundle.js";
     webpackConfig.output.chunkFilename = "build/[name].js";
     webpackConfig.plugins.forEach(plugin => {

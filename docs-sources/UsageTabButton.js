@@ -3,10 +3,16 @@ import PropTypes from "prop-types";
 // import TabButton from "rsg-components/TabButton";
 
 var UsageTabButton = function UsageTabButton(props) {
-  // var component = props.props;
-  var showButton = true; // component.props || component.methods && component.methods.length > 0 || component.slots && Object.keys(component.slots).length > 0 || component.events && Object.keys(component.events).length > 0;
+  var component = props.props;
+  var showButton =
+    component.props ||
+    (component.methods && component.methods.length > 0) ||
+    (component.slots &&
+      Object.keys(component.slots).filter(slot => slot !== "default").length >
+        0) ||
+    (component.events && Object.keys(component.events).length > 0);
   return showButton
-    ? React.createElement("h2", props, "Properties, methods and events")
+    ? React.createElement("h3", {}, "Properties, methods and events")
     : null;
 };
 
