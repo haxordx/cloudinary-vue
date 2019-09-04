@@ -124,24 +124,21 @@ export default {
         };
       }
 
-      const htmlAttrs = Transformation.new(
-        this.transformation
-      ).toHtmlAttributes();
+      const src = Cloudinary.new(this.configuration).url(this.publicId, {
+        transformation: [
+          ...this.transformation,
+          getResizeTransformation(
+            this.responsive,
+            this.size,
+            evalBreakpoints(this.breakpoints)
+          ),
+          ...(this.progressive ? [{ flags: ["progressive"] }] : [])
+        ]
+      });
 
-      const src = Cloudinary.new(this.configuration).url(
-        this.publicId,
-        merge(this.transformation, {
-          transformation: [
-            ...(this.transformation.transformation || []),
-            getResizeTransformation(
-              this.responsive,
-              this.size,
-              evalBreakpoints(this.breakpoints)
-            ),
-            ...(this.progressive ? [{ flags: ["progressive"] }] : [])
-          ]
-        })
-      );
+      const htmlAttrs = Transformation.new(
+        this.ownTransformation
+      ).toHtmlAttributes();
 
       return {
         class: className,
