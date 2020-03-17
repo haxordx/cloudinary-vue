@@ -1,3 +1,4 @@
+<!-- omit in toc -->
 # Cloudinary Vue SDK
 
 [![Build Status](https://travis-ci.org/cloudinary/cloudinary-vue.svg?branch=master)](https://travis-ci.org/cloudinary/cloudinary-vue)
@@ -8,11 +9,44 @@ Using Cloudinary's Vue.js SDK, you can easily perform smart image and video mani
 
 _This Readme provides basic installation and usage information. For the complete documentation, see the [Vue.js SDK guide](https://cloudinary.com/documentation/vue_integration)_
 
+<!-- omit in toc -->
+## Example
+
+Once the `cloudinary-vue` plugin has been included, images can embedded and transformed directly from the supplied vue components.
+
+```jsx
+<cld-image cloudName="demo" publicId="sample" crop="scale" width="300" />
+```
+
+The guides below will help you get set up, it should only take a few minutes.
+
+## Table of Contents
+- [Table of Contents](#table-of-contents)
+- [🛠️ How to install](#%f0%9f%9b%a0%ef%b8%8f-how-to-install)
+  - [vue-cli](#vue-cli)
+  - [`npm` or `yarn`](#npm-or-yarn)
+- [💻 Configure](#%f0%9f%92%bb-configure)
+  - [Configure Cloudinary options](#configure-cloudinary-options)
+  - [General usage](#general-usage)
+  - [Components](#components)
+    - [CldContext](#cldcontext)
+    - [CldImage](#cldimage)
+    - [CldVideo](#cldvideo)
+    - [CldPoster (optional)](#cldposter-optional)
+    - [CldTransformation](#cldtransformation)
+- [Selectively including components](#selectively-including-components)
+- [How to contribute?](#how-to-contribute)
+- [Additional Resources](#additional-resources)
+- [Support](#support)
+- [Join the Community](#join-the-community)
+- [License](#license)
+
+
 ## 🛠️ How to install
 
 **🎉We now support installing via Vue CLI 3.0 🎉**
 
-### Install with Vue-CLI
+### vue-cli
 
 1. After create your application with Vue-CLI, navigate to the created app folder, and install Cloudinary SDK by:
 
@@ -28,15 +62,15 @@ A `cloudinary.js` file will be added to your src directory, same level with your
 
 More information on the plugin, check out [our Vue-CLI plugin for Cloudinary Repo](https://github.com/cloudinary/vue-cli-plugin-cloudinary)
 
-## Manual install with `npm` or `yarn`
+### `npm` or `yarn`
 
 Install the package in your project with
 
 ```bash
 npm install cloudinary-vue
-
-#OR
-
+```
+or
+```
 yarn add cloudinary-vue
 ```
 
@@ -51,48 +85,16 @@ import Vue from "vue";
 import Cloudinary from "cloudinary-vue";
 ```
 
-2. You can setup Vue to use Cloudinary plugin without any configuration as below
-
-```jsx
-Vue.use(Cloudinary);
-```
-
-**Or** setup with some global Cloundinary configurations, such as `cloudName`
+2. You can setup Vue to use Cloudinary plugin without any configuration as below. Supply the Cloundinary configuration as the second parameter.
 
 ```jsx
 Vue.use(Cloudinary, {
   configuration: { cloudName: "demo" }
-  //             ^ cloudinary configuration options
 });
 ```
-
-3. Globally you can also select and register which Cloudinary components you'd like to use in your app in an **array of components**:
-
-```jsx
-import Cloudinary, { CldImage } from "cloudinary-vue";
-
-// specify which components to install in an array
-Vue.use(Cloudinary, {
-  configuration: { cloudName: "demo" },
-  components: [ CldImage ]
-});
-```
-
-**Or** define them in **object of components**, and rename any component if needed.
-
-```jsx
-import Cloudinary, { CldImage, CldTransformation } from "cloudinary-vue";
-
-Vue.use(Cloudinary, {
-  configuration: { cloudName: "demo" },
-  components: {
-    CldImage,
-    CldXf: CldTransformation
-    //^ a custom name
-  }
-});
-```
-
+- `cloudName` (required) - The cloudinary cloud name associated with your Cloudinary account.
+- `privateCdn`, `secureDistribution`, `cname`, `cdnSubdomain` - Please refer to [Cloudinary Documentation](https://cloudinary.com/documentation/react_integration#3_set_cloudinary_configuration_parameters) for information on these parameters.
+  
 **Notes**: By default, if there is no `components` defined, the plugin will _automatically_ install all available Cloudinary components.
 
 ### General usage
@@ -102,7 +104,8 @@ In order to properly use this library you have to provide it with a few configur
 ```html
 <template>
   <div>
-    <h1>Hello, world!</h1>
+
+    <h1>My flow images</h1>
 
     <cld-image cloudName="demo" publicId="sample" crop="scale" width="300" />
 
@@ -115,15 +118,8 @@ In order to properly use this library you have to provide it with a few configur
 </template>
 ```
 
-Required:
 
-- `cloudName` - The cloudinary cloud name associated with your Cloudinary account.
-
-Optional:
-
-- `privateCdn`, `secureDistribution`, `cname`, `cdnSubdomain` - Please refer to [Cloudinary Documentation](https://cloudinary.com/documentation/react_integration#3_set_cloudinary_configuration_parameters) for information on these parameters.
-
-### Specific usage
+### Components
 
 The library includes 5 components:
 
@@ -139,20 +135,26 @@ The library includes 5 components:
 
 #### CldImage
 
-outputs HTML `img` tag with a correct `src` attribute for provided Cloudinary resource, based on configuration and transformation parameters provided as attributes of this component instance, parent `CldContext` and children `CldTransformation` instances.
+The `CldImage` component outputs HTML `img` tag with a correct `src` attribute for provided Cloudinary resource, based on configuration and transformation parameters provided as attributes of this component instance, parent `CldContext` and children `CldTransformation` instances.
+
+<!-- Example -->
 
 #### CldVideo
 
 outputs HTML `video` tag with a correct `sources` for provided Cloudinary resource, based on configuration and transformation parameters provided as attributes of this component instance, parent `CldContext` and children `CldTransformation` instances.
 
+<!-- Example -->
+
 #### CldPoster (optional)
 specify image resource to be provided to `poster` attribute of the `video` element
+
+<!-- Example -->
 
 #### CldTransformation
 
 The Transformation element allows you to defined additional transformations on the parent element. You can also use built-in `transformation` attribute available in `CldImage` and `CldVideo` for the same effect.
 
-For example:
+Example:
 
 ```jsx
 <cld-image cloudName="demo" publicId="sample">
@@ -162,11 +164,40 @@ For example:
 </cld-image>
 ```
 
+## Selectively including components
+
+Globally you can also select and register which Cloudinary components you'd like to use in your app in an **array of components**:
+
+```jsx
+import Cloudinary, { CldImage } from "cloudinary-vue";
+
+// specify which components to install in an array
+Vue.use(Cloudinary, {
+  configuration: { cloudName: "demo" },
+  components: [ CldImage ]
+});
+```
+
+You can also define an **object of components**, and rename any component if needed.
+
+```jsx
+import Cloudinary, { CldImage, CldTransformation } from "cloudinary-vue";
+
+Vue.use(Cloudinary, {
+  configuration: { cloudName: "demo" },
+  components: {
+    CldImage,
+    CldXf: CldTransformation
+    //^ a custom name
+  }
+});
+```
+
 ## How to contribute?
 
 See [contributing guidelines](/CONTRIBUTING.md) in a separate file.
 
-## Additional resources
+## Additional Resources
 
 Additional resources are available at:
 
